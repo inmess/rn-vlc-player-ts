@@ -117,3 +117,7 @@ dist
 # Android
 #
 .gradle
+
+# lock
+yarn.lock
+package-lock.json

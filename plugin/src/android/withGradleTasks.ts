@@ -1,7 +1,17 @@
-const { withAppBuildGradle } = require("@expo/config-plugins");
-const generateCode = require("@expo/config-plugins/build/utils/generateCode");
+// const { withAppBuildGradle } = require("@expo/config-plugins");
+// const generateCode = require("@expo/config-plugins/build/utils/generateCode");
 
-const resolveAppGradleString = (options) => {
+import { ConfigPlugin, withAppBuildGradle } from "@expo/config-plugins";
+import { mergeContents } from "@expo/config-plugins/build/utils/generateCode";
+
+
+interface ConfigPluginAndroidOptions {
+    android?: {
+        legacyJetifier?: boolean;
+    };
+}
+
+const resolveAppGradleString = (options: ConfigPluginAndroidOptions) => {
     // for React Native 0.71, the file value now contains "jetified-react-android" instead of "jetified-react-native"
     const rnJetifierName = options?.android?.legacyJetifier ? "jetified-react-native" : "jetified-react-android";
 
@@ -30,9 +40,10 @@ const resolveAppGradleString = (options) => {
     return gradleString;
 };
 
-const withGradleTasks = (config, options) => {
+const withGradleTasks:ConfigPlugin<ConfigPluginAndroidOptions> = 
+(config, options) => {
     return withAppBuildGradle(config, (config) => {
-        const newCode = generateCode.mergeContents({
+        const newCode = mergeContents({
             tag: "withVlcMediaPlayer",
             src: config.modResults.contents,
             newSrc: resolveAppGradleString(options),
@@ -47,4 +58,4 @@ const withGradleTasks = (config, options) => {
     });
 };
 
-module.exports = withGradleTasks;
+export default withGradleTasks;

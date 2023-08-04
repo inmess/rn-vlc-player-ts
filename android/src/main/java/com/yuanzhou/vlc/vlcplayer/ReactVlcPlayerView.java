@@ -31,7 +31,11 @@ import java.util.ArrayList;
 
 
 
-
+class EventTypes {
+    public static final String EVENT_PROGRESS = "onVideoProgress";
+    public static final String EVENT_END = "onVideoEnd";
+    public static final String EVENT_PLAYING = "onVideoPlaying";
+}
 
 @SuppressLint("ViewConstructor")
 class ReactVlcPlayerView extends TextureView implements

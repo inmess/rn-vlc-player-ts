@@ -1,9 +1,13 @@
-const { withDangerousMod } = require("@expo/config-plugins");
-const generateCode = require("@expo/config-plugins/build/utils/generateCode");
-const path = require("path");
-const fs = require("fs");
+import { ConfigPlugin, withDangerousMod } from "@expo/config-plugins";
+import generateCode from "@expo/config-plugins/build/utils/generateCode";
+import path from "path";
+import fs from "fs";
 
-const withMobileVlcKit = (config, options) => {
+const withMobileVlcKit: ConfigPlugin<{
+    ios?: {
+        includeVLCKit?: boolean;
+    };
+}> = (config, options) => {
     // No need if you are running RN 0.61 and up
     if (!options?.ios?.includeVLCKit) {
         console.log("okok");
@@ -33,4 +37,4 @@ const withMobileVlcKit = (config, options) => {
     ]);
 };
 
-module.exports = withMobileVlcKit;
+export default withMobileVlcKit;

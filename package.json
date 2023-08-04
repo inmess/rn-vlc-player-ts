@@ -2,9 +2,15 @@
   "name": "react-native-vlc-media-player",
   "version": "1.0.58",
   "description": "React native media player for video streaming and playing. Supports RTSP,RTMP and other protocols supported by VLC player",
-  "main": "index.js",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "expo-module build",
+    "test": "expo-module test",
+    "clean": "expo-module clean",
+    "prepare": "expo-module prepare",
+    "prepublishOnly": "expo-module prepublishOnly",
+    "expo-module": "expo-module"
   },
   "keywords": [
     "vlc",
@@ -32,6 +38,21 @@
   },
   "homepage": "https://github.com/razorRun/react-native-vlc-media-player#readme",
   "devDependencies": {
-    "@expo/config-plugins": "^7.2.2"
+    "@expo/config-plugins": "^7.2.2",
+    "@types/react": "~17.0.21",
+    "@types/react-native": "0.70.0",
+    "@types/react-native-vector-icons": "^6.4.13",
+    "expo-module-scripts": "^3.0.11",
+    "prettier": "^2.0.5",
+    "react-native-builder-bob": "^0.20.0",
+    "typescript": "^4.5.2",
+    "expo-modules-core": "^1.5.7"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  },
+  "resolutions": {
+    "@types/react": "17.0.21"
   }
 }

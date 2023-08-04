@@ -1,0 +1,64 @@
+import React from "react";
+import { ViewProps } from 'react-native';
+type VLCPlayerProps = {
+    rate?: number;
+    seek?: number;
+    resume?: boolean;
+    snapshotPath?: string;
+    paused?: boolean;
+    autoplay?: boolean;
+    initOptions?: string[];
+    autoAspectRatio?: boolean;
+    videoAspectRatio?: string;
+    volume?: number;
+    disableFocus?: boolean;
+    src?: string;
+    playInBackground?: boolean;
+    playWhenInactive?: boolean;
+    resizeMode?: string;
+    poster?: string;
+    repeat?: boolean;
+    muted?: boolean;
+    audioTrack?: number;
+    textTrack?: number;
+    progressUpdateInterval?: number;
+    onVideoLoadStart?: (event?: any) => void;
+    onVideoError?: (event?: any) => void;
+    onVideoProgress?: (event?: any) => void;
+    onVideoEnded?: (event?: any) => void;
+    onVideoPlaying?: (event?: any) => void;
+    onVideoPaused?: (event?: any) => void;
+    onVideoStopped?: (event?: any) => void;
+    onVideoBuffering?: (event?: any) => void;
+    onVideoOpen?: (event?: any) => void;
+    onVideoLoad?: (event?: any) => void;
+    source: {
+        uri: string;
+    } | number;
+    subtitleUri?: string;
+    onError?: (event?: any) => void;
+    onProgress?: (event?: any) => void;
+    onEnded?: (event?: any) => void;
+    onStopped?: (event?: any) => void;
+    onPlaying?: (event?: any) => void;
+    onPaused?: (event?: any) => void;
+    scaleX?: number;
+    scaleY?: number;
+    translateX?: number;
+    translateY?: number;
+    rotation?: number;
+} & ViewProps;
+export interface VLCPlayerHandler {
+    _onBuffering: (event: any) => void;
+    _onError: (event: any) => void;
+    _onOpen: (event: any) => void;
+    _onLoadStart: (event: any) => void;
+    _onProgress: (event: any) => void;
+    _onEnded: (event: any) => void;
+    _onPaused: (event: any) => void;
+    _onPlaying: (event: any) => void;
+    _onLoad: (event: any) => void;
+}
+export default function VLCPlayer(props: VLCPlayerProps): React.JSX.Element;
+export {};
+//# sourceMappingURL=VLCPlayer.d.ts.map
