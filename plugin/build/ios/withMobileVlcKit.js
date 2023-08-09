@@ -10,7 +10,7 @@ const fs_1 = __importDefault(require("fs"));
 const withMobileVlcKit = (config, options) => {
     // No need if you are running RN 0.61 and up
     if (!options?.ios?.includeVLCKit) {
-        console.log("okok");
+        // console.log("okok");
         return config;
     }
     return (0, config_plugins_1.withDangerousMod)(config, [

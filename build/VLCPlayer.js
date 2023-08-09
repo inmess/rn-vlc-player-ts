@@ -1,10 +1,17 @@
-import React, { useRef } from "react";
-import { StyleSheet, requireNativeComponent } from 'react-native';
-import { Image } from "react-native";
-const RCTVLCPlayer = requireNativeComponent('RCTVLCPlayer');
+import React from "react";
+import { StyleSheet, Platform } from 'react-native';
+import RCTVLCPlayer from "./RCTVLCPlayer";
 export default function VLCPlayer(props) {
-    const { progressUpdateInterval = 250, paused = false, seek = 0, resume = false, snapshotPath = "", autoAspectRatio = false, videoAspectRatio = "", } = props;
-    const vlcRef = useRef(null);
+    const { 
+    // progressUpdateInterval = 250,
+    paused = false, seek = 0, resume = false, snapshotPath = "", 
+    // autoAspectRatio = false,
+    videoAspectRatio = "", 
+    // subtitleUri = "",
+    rate = 1, muted = false,
+    // audioTrack = -1,
+    // textTrack = -1,
+     } = props;
     // constructor(props, context) {
     //   super(props, context);
     //   this.seek = this.seek.bind(this);
@@ -34,87 +41,57 @@ export default function VLCPlayer(props) {
     // const snapshot = (path: string) => setNativeProps({ snapshotPath: path });
     // const autoAspectRatio = (isAuto: boolean) => setNativeProps({ autoAspectRatio: isAuto });
     // const changeVideoAspectRatio = (ratio: string) => setNativeProps({ videoAspectRatio: ratio });
-    // const _assignRoot = (component) => {
-    //     this._root = component;
-    // }
     const _onBuffering = (event) => {
         if (props.onVideoBuffering) {
-            props.onVideoBuffering(event.nativeEvent);
+            props.onVideoBuffering(event);
         }
     };
     const _onError = (event) => {
         if (props.onError) {
-            props.onError(event.nativeEvent);
+            props.onError(event);
         }
     };
     const _onOpen = (event) => {
         if (props.onVideoOpen) {
-            props.onVideoOpen(event.nativeEvent);
+            props.onVideoOpen(event);
         }
     };
     const _onLoadStart = (event) => {
         if (props.onVideoLoadStart) {
-            props.onVideoLoadStart(event.nativeEvent);
+            props.onVideoLoadStart(event);
         }
     };
     const _onProgress = (event) => {
         if (props.onVideoProgress) {
-            props.onVideoProgress(event.nativeEvent);
+            props.onVideoProgress(event);
         }
     };
     const _onEnded = (event) => {
         if (props.onEnded) {
-            props.onEnded(event.nativeEvent);
+            props.onEnded(event);
         }
     };
-    // const _onStopped = () => {
-    //     setNativeProps({ paused: true });
-    //     if (props.onStopped) {
-    //         props.onStopped();
-    //     }
-    // }
     const _onPaused = (event) => {
         if (props.onPaused) {
-            props.onPaused(event.nativeEvent);
+            props.onPaused(event);
         }
     };
     const _onPlaying = (event) => {
         if (props.onPlaying) {
-            props.onPlaying(event.nativeEvent);
+            props.onPlaying(event);
         }
     };
     const _onLoad = (event) => {
         if (props.onVideoLoad) {
-            props.onVideoLoad(event.nativeEvent);
+            props.onVideoLoad(event);
         }
     };
-    // const pause = () => {
-    //     vlcRef.current?.setNativeProps({ paused: true });
-    // }
-    // // useImperativeHandle(ref, () => ({
-    //     // seek,
-    //     // resume,
-    //     // snapshot,
-    //     // autoAspectRatio,
-    //     // changeVideoAspectRatio,
-    //     _onBuffering,
-    //     _onError,
-    //     _onOpen,
-    //     _onLoadStart,
-    //     _onProgress,
-    //     _onEnded,
-    //     // _onStopped,
-    //     _onPaused,
-    //     _onPlaying,
-    //     _onLoad,
-    // }), [])
-    // render() {
-    /* const {
-     source
-     } = this.props;*/
-    const resolvedSource = Image.resolveAssetSource(props.source) || {};
-    // resolvedSource
-    let uri = resolvedSource.uri || "";
+    const _onStopped = (event) => {
+        if (props.onVideoStopped) {
+            props.onVideoStopped(event);
+        }
+    };
+    let uri = props.source?.uri || "";
     if (uri && uri.match(/^\//))
         uri = `file://${uri}`;
     let isNetwork = !!(uri && uri.match(/^https?:/));
@@ -124,33 +101,39 @@ export default function VLCPlayer(props) {
     if (uri && uri.match(/^\//))
         isNetwork = false;
     const { autoplay = true, initOptions = [], } = props;
+    let options;
+    let opList = [...initOptions, '--input-repeat=1000'];
+    if (Platform.OS === "ios") {
+        options = opList.reduce((acc, cur) => {
+            if (!cur.startsWith("--"))
+                return acc;
+            cur = cur.slice(2);
+            const [key, value] = cur.split("=");
+            acc[key] = value;
+            return acc;
+        }, {});
+    }
+    else {
+        options = opList;
+    }
     const source = {
         uri,
         isNetwork,
         autoplay,
-        initOptions: [
-            ...initOptions,
-            "--input-repeat=1000"
-        ],
+        initOptions: options,
     };
-    const nativeProps = Object.assign({}, props);
-    Object.assign(nativeProps, {
-        style: [styles.base, nativeProps.style],
+    const nativeProps = {
+        // ...props,
+        style: [styles.base, props.style],
         source,
-        src: {
-            uri,
-            isNetwork,
-            isAsset,
-            type: "",
-            mainVer: 0,
-            patchVer: 0,
-        },
         paused,
-        seek,
-        resume,
+        // seek,
+        // resume,
         snapshotPath,
-        autoAspectRatio,
         videoAspectRatio,
+        // subtitleUri,
+        muted,
+        rate,
         onVideoLoadStart: _onLoadStart,
         onVideoOpen: _onOpen,
         onVideoError: _onError,
@@ -159,16 +142,27 @@ export default function VLCPlayer(props) {
         onVideoEnd: _onEnded,
         onVideoPlaying: _onPlaying,
         onVideoPaused: _onPaused,
-        // onVideoStopped: _onStopped,
+        onVideoStopped: _onStopped,
         onVideoBuffering: _onBuffering,
         onVideoLoad: _onLoad,
-        progressUpdateInterval,
-    });
+        // onVideoProgress,
+        // onVideoPaused,
+        // onVideoStopped,
+        // onVideoBuffering,
+        // onVideoPlaying,
+        // onVideoEnded,
+        // onVideoError,
+        // onVideoOpen,
+        // onVideoLoadStart,
+        // onVideoLoad,
+        // progressUpdateInterval,
+    };
     return (React.createElement(RCTVLCPlayer, { ...nativeProps }));
 }
 const styles = StyleSheet.create({
     base: {
         overflow: "hidden",
+        flex: 1
     },
 });
 // const RCTVLCPlayer = requireNativeComponent("RCTVLCPlayer", VLCPlayer);

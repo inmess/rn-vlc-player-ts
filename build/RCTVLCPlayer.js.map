@@ -1,0 +1,1 @@
+{"version":3,"file":"RCTVLCPlayer.js","sourceRoot":"","sources":["../src/RCTVLCPlayer.tsx"],"names":[],"mappings":"AAAA,OAAO,EAAE,sBAAsB,EAAE,MAAM,cAAc,CAAC;AAEtD,eAAe,sBAAsB,CAAC,cAAc,CAAC,CAAA","sourcesContent":["import { requireNativeComponent } from \"react-native\";\n\nexport default requireNativeComponent('RCTVLCPlayer')"]}

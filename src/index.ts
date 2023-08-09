@@ -6,9 +6,9 @@
 
 // module.exports = VLCPlayerControl;
 import VLCPlayer from "./VLCPlayer"
-import VLCPlayerView from "./playerView/VLCPlayerView"
+// import VLCPlayerView from "./playerView/VLCPlayerView"
 
 export {
     VLCPlayer,
-    VLCPlayerView
+    // VLCPlayerView,
 }

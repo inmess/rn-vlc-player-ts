@@ -32,9 +32,9 @@ type VLCPlayerProps = {
     onVideoBuffering?: (event?: any) => void;
     onVideoOpen?: (event?: any) => void;
     onVideoLoad?: (event?: any) => void;
-    source: {
+    source?: {
         uri: string;
-    } | number;
+    };
     subtitleUri?: string;
     onError?: (event?: any) => void;
     onProgress?: (event?: any) => void;
@@ -42,23 +42,7 @@ type VLCPlayerProps = {
     onStopped?: (event?: any) => void;
     onPlaying?: (event?: any) => void;
     onPaused?: (event?: any) => void;
-    scaleX?: number;
-    scaleY?: number;
-    translateX?: number;
-    translateY?: number;
-    rotation?: number;
 } & ViewProps;
-export interface VLCPlayerHandler {
-    _onBuffering: (event: any) => void;
-    _onError: (event: any) => void;
-    _onOpen: (event: any) => void;
-    _onLoadStart: (event: any) => void;
-    _onProgress: (event: any) => void;
-    _onEnded: (event: any) => void;
-    _onPaused: (event: any) => void;
-    _onPlaying: (event: any) => void;
-    _onLoad: (event: any) => void;
-}
 export default function VLCPlayer(props: VLCPlayerProps): React.JSX.Element;
 export {};
 //# sourceMappingURL=VLCPlayer.d.ts.map

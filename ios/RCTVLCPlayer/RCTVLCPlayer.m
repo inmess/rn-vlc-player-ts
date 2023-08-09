@@ -105,7 +105,7 @@ static NSString *const playbackRate = @"rate";
     // [bavv edit start]
     NSString* uri    = [_source objectForKey:@"uri"];
     NSURL* _uri    = [NSURL URLWithString:uri];
-    NSDictionary* initOptions = [_source objectForKey:@"initOptions"];
+    // NSDictionary* initOptions = [_source objectForKey:@"initOptions"];
 
     _player = [[VLCMediaPlayer alloc] init];
 	// [bavv edit end]
@@ -115,19 +115,21 @@ static NSString *const playbackRate = @"rate";
     _player.scaleFactor = 0;
     VLCMedia *media = [VLCMedia mediaWithURL:_uri];
 
-    NSMutableDictionary *options = [NSMutableDictionary new];
-    [options setObject:@"1" forKey:@"rtsp-tcp"];
-    [options setObject:@"1000" forKey:@"input-repeat"];
-    [media addOptions:[options copy]];
-    options = nil;
+    // NSMutableDictionary *options = [NSMutableDictionary new];
+    
+    // [options addEntriesFromDictionary:initOptions];
+    // [options setObject:@"1" forKey:@"rtsp-tcp"];
+    // [options setObject:@"1000" forKey:@"input-repeat"];
+    // [media addOptions:[options copy]];
+    // options = nil;
 
     _player.media = media;
     _player.media.delegate = self;
     [[AVAudioSession sharedInstance] setActive:NO withOptions:AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation error:nil];
     NSLog(@"autoplay: %i",autoplay);
-    self.onVideoLoadStart(@{
-                            @"target": self.reactTag
-                            });
+    // self.onVideoLoadStart(@{
+    //                         @"target": self.reactTag
+    //                         });
 
 }
 
@@ -143,7 +145,9 @@ static NSString *const playbackRate = @"rate";
     NSString* uri    = [source objectForKey:@"uri"];
     BOOL    autoplay = [RCTConvert BOOL:[source objectForKey:@"autoplay"]];
     NSURL* _uri    = [NSURL URLWithString:uri];
-    NSDictionary* initOptions = [source objectForKey:@"initOptions"];
+    // NSDictionary* initOptions = [source objectForKey:@"initOptions"];
+
+    // NSLog(@"uri: %@", uri);
 
     _player = [[VLCMediaPlayer alloc] init];
     // [bavv edit end]
@@ -154,19 +158,20 @@ static NSString *const playbackRate = @"rate";
 
     VLCMedia *media = [VLCMedia mediaWithURL:_uri];
 
-    NSMutableDictionary *options = [NSMutableDictionary new];
-    [options setObject:@"1" forKey:@"rtsp-tcp"];
-    [options setObject:@"1000" forKey:@"input-repeat"];
-    [media addOptions:[options copy]];
-    options = nil;
+    // NSMutableDictionary *options = [NSMutableDictionary new];
+    // [options addEntiresFromDictionary:initOptions]
+    // [options setObject:@"1" forKey:@"rtsp-tcp"];
+    // [options setObject:@"1000" forKey:@"input-repeat"];
+    // [media addOptions:[options copy]];
+    // options = nil;
 
     _player.media = media;
     _player.media.delegate = self;
     [[AVAudioSession sharedInstance] setActive:NO withOptions:AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation error:nil];
     NSLog(@"autoplay: %i",autoplay);
-    self.onVideoLoadStart(@{
-                           @"target": self.reactTag
-                           });
+    // self.onVideoLoadStart(@{
+    //                        @"target": self.reactTag
+    //                        });
     if(_subtitleUri) {
         [_player addPlaybackSlave:_subtitleUri type:VLCMediaPlaybackSlaveTypeSubtitle enforce:YES];
     }
@@ -198,71 +203,71 @@ static NSString *const playbackRate = @"rate";
      NSLog(@"standardUserDefaults %@",defaults);
     if(_player){
         VLCMediaPlayerState state = _player.state;
-        switch (state) {
-            case VLCMediaPlayerStateOpening:
-                 NSLog(@"VLCMediaPlayerStateOpening  %i", _player.numberOfAudioTracks);
-                self.onVideoOpen(@{
-                                     @"target": self.reactTag
-                                     });
-                break;
-            case VLCMediaPlayerStatePaused:
-                _paused = YES;
-                NSLog(@"VLCMediaPlayerStatePaused %i", _player.numberOfAudioTracks);
-                self.onVideoPaused(@{
-                                     @"target": self.reactTag
-                                     });
-                break;
-            case VLCMediaPlayerStateStopped:
-                NSLog(@"VLCMediaPlayerStateStopped %i", _player.numberOfAudioTracks);
-                self.onVideoStopped(@{
-                                      @"target": self.reactTag
-                                      });
-                break;
-            case VLCMediaPlayerStateBuffering:
-                NSLog(@"VLCMediaPlayerStateBuffering %i", _player.numberOfAudioTracks);
-                if(!_videoInfo && _player.numberOfAudioTracks > 0) {
-                    _videoInfo = [self getVideoInfo];
-                    self.onVideoLoad(_videoInfo);
-                }
+        // switch (state) {
+        //     case VLCMediaPlayerStateOpening:
+        //          NSLog(@"VLCMediaPlayerStateOpening  %i", _player.numberOfAudioTracks);
+        //         self.onVideoOpen(@{
+        //                              @"target": self.reactTag
+        //                              });
+        //         break;
+        //     case VLCMediaPlayerStatePaused:
+        //         _paused = YES;
+        //         NSLog(@"VLCMediaPlayerStatePaused %i", _player.numberOfAudioTracks);
+        //         self.onVideoPaused(@{
+        //                              @"target": self.reactTag
+        //                              });
+        //         break;
+        //     case VLCMediaPlayerStateStopped:
+        //         NSLog(@"VLCMediaPlayerStateStopped %i", _player.numberOfAudioTracks);
+        //         self.onVideoStopped(@{
+        //                               @"target": self.reactTag
+        //                               });
+        //         break;
+        //     case VLCMediaPlayerStateBuffering:
+        //         NSLog(@"VLCMediaPlayerStateBuffering %i", _player.numberOfAudioTracks);
+        //         if(!_videoInfo && _player.numberOfAudioTracks > 0) {
+        //             _videoInfo = [self getVideoInfo];
+        //             self.onVideoLoad(_videoInfo);
+        //         }
 
 
-                self.onVideoBuffering(@{
-                                        @"target": self.reactTag
-                                        });
-                break;
-            case VLCMediaPlayerStatePlaying:
-                _paused = NO;
-                NSLog(@"VLCMediaPlayerStatePlaying %i", _player.numberOfAudioTracks);
-                self.onVideoPlaying(@{
-                                      @"target": self.reactTag,
-                                      @"seekable": [NSNumber numberWithBool:[_player isSeekable]],
-                                      @"duration":[NSNumber numberWithInt:[_player.media.length intValue]]
-                                      });
-                break;
-            case VLCMediaPlayerStateEnded:
-                NSLog(@"VLCMediaPlayerStateEnded %i",  _player.numberOfAudioTracks);
-                int currentTime   = [[_player time] intValue];
-                int remainingTime = [[_player remainingTime] intValue];
-                int duration      = [_player.media.length intValue];
+        //         self.onVideoBuffering(@{
+        //                                 @"target": self.reactTag
+        //                                 });
+        //         break;
+        //     case VLCMediaPlayerStatePlaying:
+        //         _paused = NO;
+        //         NSLog(@"VLCMediaPlayerStatePlaying %i", _player.numberOfAudioTracks);
+        //         self.onVideoPlaying(@{
+        //                               @"target": self.reactTag,
+        //                               @"seekable": [NSNumber numberWithBool:[_player isSeekable]],
+        //                               @"duration":[NSNumber numberWithInt:[_player.media.length intValue]]
+        //                               });
+        //         break;
+        //     case VLCMediaPlayerStateEnded:
+        //         NSLog(@"VLCMediaPlayerStateEnded %i",  _player.numberOfAudioTracks);
+        //         int currentTime   = [[_player time] intValue];
+        //         int remainingTime = [[_player remainingTime] intValue];
+        //         int duration      = [_player.media.length intValue];
 
-                self.onVideoEnded(@{
-                                    @"target": self.reactTag,
-                                    @"currentTime": [NSNumber numberWithInt:currentTime],
-                                    @"remainingTime": [NSNumber numberWithInt:remainingTime],
-                                    @"duration":[NSNumber numberWithInt:duration],
-                                    @"position":[NSNumber numberWithFloat:_player.position]
-                                    });
-                break;
-            case VLCMediaPlayerStateError:
-                NSLog(@"VLCMediaPlayerStateError %i", _player.numberOfAudioTracks);
-                self.onVideoError(@{
-                                    @"target": self.reactTag
-                                    });
-                [self _release];
-                break;
-            default:
-                break;
-        }
+        //         self.onVideoEnded(@{
+        //                             @"target": self.reactTag,
+        //                             @"currentTime": [NSNumber numberWithInt:currentTime],
+        //                             @"remainingTime": [NSNumber numberWithInt:remainingTime],
+        //                             @"duration":[NSNumber numberWithInt:duration],
+        //                             @"position":[NSNumber numberWithFloat:_player.position]
+        //                             });
+        //         break;
+        //     case VLCMediaPlayerStateError:
+        //         NSLog(@"VLCMediaPlayerStateError %i", _player.numberOfAudioTracks);
+        //         self.onVideoError(@{
+        //                             @"target": self.reactTag
+        //                             });
+        //         [self _release];
+        //         break;
+        //     default:
+        //         break;
+        // }
     }
 }
 
@@ -287,13 +292,13 @@ static NSString *const playbackRate = @"rate";
         int duration      = [_player.media.length intValue];
 
         if( currentTime >= 0 && currentTime < duration) {
-            self.onVideoProgress(@{
-                                   @"target": self.reactTag,
-                                   @"currentTime": [NSNumber numberWithInt:currentTime],
-                                   @"remainingTime": [NSNumber numberWithInt:remainingTime],
-                                   @"duration":[NSNumber numberWithInt:duration],
-                                   @"position":[NSNumber numberWithFloat:_player.position]
-                                   });
+            // self.onVideoProgress(@{
+            //                        @"target": self.reactTag,
+            //                        @"currentTime": [NSNumber numberWithInt:currentTime],
+            //                        @"remainingTime": [NSNumber numberWithInt:remainingTime],
+            //                        @"duration":[NSNumber numberWithInt:duration],
+            //                        @"position":[NSNumber numberWithFloat:_player.position]
+            //                        });
         }
     }
 }
