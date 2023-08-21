@@ -100,7 +100,7 @@ export default function VLCPlayer(props) {
         isNetwork = true;
     if (uri && uri.match(/^\//))
         isNetwork = false;
-    const { autoplay = true, initOptions = [], } = props;
+    const { autoplay = true, initOptions = [], mediaOptions = [], } = props;
     let options;
     let opList = [...initOptions, '--input-repeat=1000'];
     if (Platform.OS === "ios") {
@@ -121,6 +121,7 @@ export default function VLCPlayer(props) {
         isNetwork,
         autoplay,
         initOptions: options,
+        mediaOptions,
     };
     const nativeProps = {
         // ...props,

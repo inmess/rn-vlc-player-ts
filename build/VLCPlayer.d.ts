@@ -8,6 +8,7 @@ type VLCPlayerProps = {
     paused?: boolean;
     autoplay?: boolean;
     initOptions?: string[];
+    mediaOptions?: string[];
     autoAspectRatio?: boolean;
     videoAspectRatio?: string;
     volume?: number;
