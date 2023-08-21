@@ -15,6 +15,7 @@ type VLCPlayerProps = {
     paused?: boolean;
     autoplay?: boolean;
     initOptions?: string[];
+    mediaOptions?: string[];
 
     autoAspectRatio?: boolean;
     videoAspectRatio?: string;
@@ -195,6 +196,7 @@ export default function VLCPlayer(props: VLCPlayerProps) {
     const {
         autoplay = true,
         initOptions = [],
+        mediaOptions = [],
     } = props
 
     let options: any 
@@ -217,6 +219,7 @@ export default function VLCPlayer(props: VLCPlayerProps) {
         isNetwork,
         autoplay,
         initOptions: options,
+        mediaOptions,
     };
     
     const nativeProps = {
